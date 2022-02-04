@@ -27,6 +27,7 @@ public class CategoryController : BaseController
         {
             _context.Categories.Add(category);
             _context.SaveChanges();
+            TempData["success"] = "Created Category successfully";
             return RedirectToAction("Index");
         }
         return View(category);
@@ -57,6 +58,7 @@ public class CategoryController : BaseController
         {
             _context.Categories.Update(category);
             _context.SaveChanges();
+            TempData["success"] = "Updated Category successfully";
             return RedirectToAction("Index");
         }
         return View(category);
@@ -87,6 +89,7 @@ public class CategoryController : BaseController
 
         _context.Categories.Remove(category);
         _context.SaveChanges();
+        TempData["success"] = "Deleted Category successfully";
 
         return RedirectToAction("Index");
     }
