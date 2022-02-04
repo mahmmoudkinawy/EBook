@@ -14,23 +14,32 @@
             </a>
         </div>
     </div>
-</div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Category Name</th>
-            <th>Display Order</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var category in Model)
-        {
+
+    <table class="table table-bordered table-striped">
+        <thead>
             <tr>
-                <td width="50%">@category.Name</td>
-                <td width="30%">@category.DisplayOrder</td>
+                <th>Category Name</th>
+                <th>Display Order</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td width="50%">@category.Name</td>
+                    <td width="30%">@category.DisplayOrder</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-primary mx-2" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
+</div>

@@ -18,7 +18,8 @@ public class DataContext : DbContext
             {
                 Id = 1,
                 Name = "Test 1",
-                CreatedDateTime = DateTime.Now
+                CreatedDateTime = DateTime.Now,
+                DisplayOrder = 5
             });
     }
 }

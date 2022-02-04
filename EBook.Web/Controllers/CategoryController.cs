@@ -16,6 +16,7 @@ public class CategoryController : BaseController
 
     //POST the model
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Create(Category category)
     {
         if (category.Name == category.DisplayOrder.ToString())
@@ -30,6 +31,37 @@ public class CategoryController : BaseController
         }
         return View(category);
     }
+
+    //GET edit view
+    public IActionResult Edit(int? id)
+    {
+        if (id == null || id == 0) return NotFound();
+
+        var category = _context.Categories.Find(id);
+
+        if (category == null) return NotFound();
+
+        return View(category);
+    }
+
+    //POST data
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(Category category)
+    {
+        if (category.Name == category.DisplayOrder.ToString())
+        {
+            ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name.");
+        }
+        if (ModelState.IsValid)
+        {
+            _context.Categories.Update(category);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        return View(category);
+    }
+
 
 }
 
