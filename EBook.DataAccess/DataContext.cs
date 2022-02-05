@@ -1,7 +1,7 @@
-﻿using EBook.Web.Models;
+﻿using EBook.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EBook.Web.Data;
+namespace EBook.DataAccess.Migrations;
 public class DataContext : DbContext
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)

@@ -1,4 +1,4 @@
-namespace EBook.Web.Models;
+namespace EBook.Models;
 public class ErrorViewModel
 {
     public string? RequestId { get; set; }

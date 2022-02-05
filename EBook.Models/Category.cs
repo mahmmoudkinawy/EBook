@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EBook.Web.Models;
+namespace EBook.Models;
 public class Category
 {
     [Key]

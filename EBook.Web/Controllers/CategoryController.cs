@@ -1,5 +1,5 @@
-﻿using EBook.Web.Data;
-using EBook.Web.Models;
+﻿using EBook.DataAccess.Migrations;
+using EBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EBook.Web.Controllers;
