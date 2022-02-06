@@ -1,4 +1,4 @@
 ﻿namespace EBook.Utility;
-public static class StaticData
+public static class Constans
 {
 }
