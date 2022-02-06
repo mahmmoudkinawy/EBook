@@ -1,4 +1,4 @@
-﻿namespace EBook.DataAccess.Migrations;
+﻿namespace EBook.DataAccess;
 public class DataContext : DbContext
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
