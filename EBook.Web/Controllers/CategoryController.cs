@@ -1,8 +1,4 @@
-﻿using EBook.DataAccess.Interfaces;
-using EBook.Models;
-using Microsoft.AspNetCore.Mvc;
-
-namespace EBook.Web.Controllers;
+﻿namespace EBook.Web.Controllers;
 public class CategoryController : BaseController
 {
     private readonly ICategoryRepository _categoryRepository;

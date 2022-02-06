@@ -1,4 +1,4 @@
 ﻿namespace EBook.Utility;
-public static class Constans
+public static class Constants
 {
 }

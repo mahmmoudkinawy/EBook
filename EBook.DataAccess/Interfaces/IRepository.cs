@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace EBook.DataAccess.Interfaces;
+﻿namespace EBook.DataAccess.Interfaces;
 
 public interface IRepository<T> where T : class
 {

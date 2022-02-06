@@ -1,8 +1,3 @@
-using EBook.DataAccess.Interfaces;
-using EBook.DataAccess.Migrations;
-using EBook.DataAccess.Repositories;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

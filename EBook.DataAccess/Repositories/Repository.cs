@@ -1,9 +1,4 @@
-﻿using EBook.DataAccess.Interfaces;
-using EBook.DataAccess.Migrations;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-
-namespace EBook.DataAccess.Repositories;
+﻿namespace EBook.DataAccess.Repositories;
 public class Repository<T> : IRepository<T> where T : class
 {
     private readonly DataContext _context;
