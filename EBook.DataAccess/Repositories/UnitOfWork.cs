@@ -7,9 +7,11 @@ public class UnitOfWork : IUnitOfWork
     {
         _context = context;
         CategoryRepository = new CategoryRepository(_context); //Initial value for CategoryRepository
+        CoverTypeRepository = new CoverTypeRepository(_context);
     }
 
     public ICategoryRepository CategoryRepository { get; }
+    public ICoverTypeRepository CoverTypeRepository { get; }
 
     public void Save() => _context.SaveChanges();
 }
