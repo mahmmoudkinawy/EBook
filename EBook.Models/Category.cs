@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace EBook.Models;
+﻿namespace EBook.Models;
 public class Category
 {
     [Key]
