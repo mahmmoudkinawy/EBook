@@ -1,11 +1,12 @@
 ﻿namespace EBook.Web.Controllers;
 public class CategoryController : BaseController
 {
-    private readonly ICategoryRepository _categoryRepository;
-    public CategoryController(ICategoryRepository categoryRepository) => _categoryRepository = categoryRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public CategoryController(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
     //GET all data
-    public IActionResult Index() => View(_categoryRepository.GetAll());
+    public IActionResult Index() => View(_unitOfWork.CategoryRepository.GetAll());
 
     //GET the View
     public IActionResult Create() => View();
@@ -21,8 +22,8 @@ public class CategoryController : BaseController
         }
         if (ModelState.IsValid)
         {
-            _categoryRepository.Add(category);
-            _categoryRepository.Save();
+            _unitOfWork.CategoryRepository.Add(category);
+            _unitOfWork.Save();
             TempData["success"] = "Created Category successfully";
             return RedirectToAction("Index");
         }
@@ -34,7 +35,7 @@ public class CategoryController : BaseController
     {
         if (id == null || id == 0) return NotFound();
 
-        var category = _categoryRepository.GetFirstOrDefault(c => c.Id == id);
+        var category = _unitOfWork.CategoryRepository.GetFirstOrDefault(c => c.Id == id);
 
         if (category == null) return NotFound();
 
@@ -52,8 +53,8 @@ public class CategoryController : BaseController
         }
         if (ModelState.IsValid)
         {
-            _categoryRepository.Update(category);
-            _categoryRepository.Save();
+            _unitOfWork.CategoryRepository.Update(category);
+            _unitOfWork.Save();
             TempData["success"] = "Updated Category successfully";
             return RedirectToAction("Index");
         }
@@ -65,7 +66,7 @@ public class CategoryController : BaseController
     {
         if (id == null || id == 0) return NotFound();
 
-        var category = _categoryRepository.GetFirstOrDefault(c => c.Id == id);
+        var category = _unitOfWork.CategoryRepository.GetFirstOrDefault(c => c.Id == id);
 
         if (category == null) return NotFound();
 
@@ -79,12 +80,12 @@ public class CategoryController : BaseController
     {
         if (id == null || id == 0) return NotFound();
 
-        var category = _categoryRepository.GetFirstOrDefault(c => c.Id == id);
+        var category = _unitOfWork.CategoryRepository.GetFirstOrDefault(c => c.Id == id);
 
         if (category == null) return NotFound();
 
-        _categoryRepository.Remove(category);
-        _categoryRepository.Save();
+        _unitOfWork.CategoryRepository.Remove(category);
+        _unitOfWork.Save();
         TempData["success"] = "Deleted Category successfully";
 
         return RedirectToAction("Index");
