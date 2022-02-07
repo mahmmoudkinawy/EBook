@@ -1,7 +1,5 @@
 ﻿namespace EBook.Web.Areas.Admin.Controllers;
-
-[Area("Admin")]
-public class CategoryController : Controller
+public class CategoryController : BaseAdminController
 {
     private readonly IUnitOfWork _unitOfWork;
 
