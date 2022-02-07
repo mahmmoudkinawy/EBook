@@ -17,10 +17,10 @@
     </div>
 
 
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped" style="width: 100%">
         <thead>
             <tr>
-                <th>Category Name</th>
+                <th>Cover Type</th>
                 <th></th>
             </tr>
         </thead>
@@ -31,10 +31,10 @@
                     <td width="50%">@coverType.Name</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <a class="btn btn-primary mx-2" asp-controller="CoverType" asp-action="Edit" asp-route-id="@coverType.Id">
+                            <a class="btn btn-primary mx-2" style="width: 150px" asp-controller="CoverType" asp-action="Edit" asp-route-id="@coverType.Id">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
-                            <a class="btn btn-danger mx-2" asp-controller="CoverType" asp-action="Delete" asp-route-id="@coverType.Id">
+                            <a class="btn btn-danger mx-2" style="width: 150px" asp-controller="CoverType" asp-action="Delete" asp-route-id="@coverType.Id">
                                 <i class="bi bi-trash"></i> Delete
                             </a>
                         </div>
