@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace EBook.Web.Areas.Admin.Controllers;
+﻿namespace EBook.Web.Areas.Admin.Controllers;
 public class ProductController : BaseAdminController
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -11,18 +9,11 @@ public class ProductController : BaseAdminController
 
     public IActionResult Upsert(int? id)
     {
-        var categoryList = _unitOfWork.CategoryRepository.GetAll()
-                    .Select(c => new SelectListItem
-                    {
-                        Text = c.Name,
-                        Value = c.Id.ToString()
-                    });
-
-
         if (id == null || id == 0)
         {
             //Create new Product Model
-            ViewBag.categoryList = categoryList;
+            ViewBag.CategoryList = _unitOfWork.CategoryList();
+            ViewData["CoverTypeList"] = _unitOfWork.CoverTypeList();
             return View(new Product());
         }
         else
