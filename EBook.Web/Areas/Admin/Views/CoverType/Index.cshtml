@@ -30,14 +30,14 @@
                 <tr>
                     <td width="50%">@coverType.Name</td>
                     <td>
-                        @*                        <div class="btn-group" role="group">
-                            <a class="btn btn-primary mx-2" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id">
-                            <i class="bi bi-pencil-square"></i> Edit
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-primary mx-2" asp-controller="CoverType" asp-action="Edit" asp-route-id="@coverType.Id">
+                                <i class="bi bi-pencil-square"></i> Edit
                             </a>
-                            <a class="btn btn-danger mx-2" asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id">
-                            <i class="bi bi-trash"></i> Delete
+                            <a class="btn btn-danger mx-2" asp-controller="CoverType" asp-action="Delete" asp-route-id="@coverType.Id">
+                                <i class="bi bi-trash"></i> Delete
                             </a>
-                            </div>*@
+                        </div>
                     </td>
                 </tr>
             }
