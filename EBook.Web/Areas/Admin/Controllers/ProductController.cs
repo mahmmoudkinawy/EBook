@@ -7,7 +7,8 @@ public class ProductController : BaseAdminController
 
     public ProductController(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
-    public IActionResult Index() => View(_unitOfWork.ProductRepository.GetAll());
+    //GET the View only
+    public IActionResult Index() => View();
 
     public IActionResult Upsert(int? id)
     {
@@ -34,6 +35,20 @@ public class ProductController : BaseAdminController
         else
         {
 
+        }
+        return View(productViewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Upsert(ProductViewModel productViewModel, IFormFile file)
+    {
+        if (ModelState.IsValid)
+        {
+            _unitOfWork.ProductRepository.Add(productViewModel.Product);
+            _unitOfWork.Save();
+            TempData["success"] = "Product Created Successfully";
+            return RedirectToAction("Index");
         }
 
         return View(productViewModel);
