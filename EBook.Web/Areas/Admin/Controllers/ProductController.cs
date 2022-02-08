@@ -52,7 +52,7 @@ public class ProductController : BaseAdminController
         if (ModelState.IsValid)
         {
             var result = _photoService.AddPhoto(file);
-            productViewModel.Product.ImageUrl = result.PublicId;
+            productViewModel.Product.ImageUrl = result.SecureUrl.AbsoluteUri;
             _unitOfWork.ProductRepository.Add(productViewModel.Product);
             _unitOfWork.Save();
             TempData["success"] = "Product Created Successfully";
