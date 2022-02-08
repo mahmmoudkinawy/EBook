@@ -1,11 +1,17 @@
-﻿using EBook.Models.ViewModels;
+﻿using EBook.DataAccess.Services;
+using EBook.Models.ViewModels;
 
 namespace EBook.Web.Areas.Admin.Controllers;
 public class ProductController : BaseAdminController
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPhotoService _photoService;
 
-    public ProductController(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    public ProductController(IUnitOfWork unitOfWork, IPhotoService photoService)
+    {
+        _unitOfWork = unitOfWork;
+        _photoService = photoService;
+    }
 
     //GET the View only
     public IActionResult Index() => View();
@@ -45,6 +51,8 @@ public class ProductController : BaseAdminController
     {
         if (ModelState.IsValid)
         {
+            var result = _photoService.AddPhoto(file);
+            productViewModel.Product.ImageUrl = result.PublicId;
             _unitOfWork.ProductRepository.Add(productViewModel.Product);
             _unitOfWork.Save();
             TempData["success"] = "Product Created Successfully";
