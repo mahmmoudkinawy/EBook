@@ -31,14 +31,12 @@ public class ProductController : BaseAdminController
         };
 
         if (id == null || id == 0)
-        {
             //Create new Product Model
             return View(productViewModel);
-        }
         else
-        {
+            //Get the product with the ID from the query
+            productViewModel.Product = _unitOfWork.ProductRepository.GetFirstOrDefault(p => p.Id == id);
 
-        }
         return View(productViewModel);
     }
 
