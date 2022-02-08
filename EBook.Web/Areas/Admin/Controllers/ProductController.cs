@@ -61,4 +61,13 @@ public class ProductController : BaseAdminController
 
         return View(productViewModel);
     }
+
+    #region API calls
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var products = _unitOfWork.ProductRepository.GetAll();
+        return Json(new { data = products });
+    }
+    #endregion
 }
