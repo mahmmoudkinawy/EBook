@@ -48,9 +48,19 @@ public class ProductController : BaseAdminController
         {
             var result = _photoService.AddPhoto(file);
             productViewModel.Product.ImageUrl = result.SecureUrl.AbsoluteUri;
-            _unitOfWork.ProductRepository.Add(productViewModel.Product);
+
+            if (productViewModel.Product.Id == 0)
+            {
+                _unitOfWork.ProductRepository.Add(productViewModel.Product);
+                TempData["success"] = "Product Created Successfully";
+            }
+            else
+            {
+                _unitOfWork.ProductRepository.Update(productViewModel.Product);
+                TempData["success"] = "Product Updated Successfully";
+            }
+
             _unitOfWork.Save();
-            TempData["success"] = "Product Created Successfully";
             return RedirectToAction("Index");
         }
 
