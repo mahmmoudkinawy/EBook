@@ -6,3 +6,5 @@ global using EBook.Models;
 global using EBook.DataAccess;
 global using Microsoft.AspNetCore.Mvc.Rendering;
 global using EBook.Models.Helpers;
+global using EBook.DataAccess.Services;
+global using EBook.Models.ViewModels;

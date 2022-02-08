@@ -1,7 +1,4 @@
-﻿using EBook.DataAccess.Services;
-using EBook.Models.ViewModels;
-
-namespace EBook.Web.Areas.Admin.Controllers;
+﻿namespace EBook.Web.Areas.Admin.Controllers;
 public class ProductController : BaseAdminController
 {
     private readonly IUnitOfWork _unitOfWork;

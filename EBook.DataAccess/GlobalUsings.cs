@@ -2,3 +2,8 @@
 global using System.Linq.Expressions;
 global using EBook.DataAccess.Interfaces;
 global using Microsoft.EntityFrameworkCore;
+global using CloudinaryDotNet;
+global using CloudinaryDotNet.Actions;
+global using EBook.Models.Helpers;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.Extensions.Options;

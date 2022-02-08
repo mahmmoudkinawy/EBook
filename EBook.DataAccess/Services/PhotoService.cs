@@ -1,10 +1,4 @@
-﻿using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using EBook.Models.Helpers;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-
-namespace EBook.DataAccess.Services;
+﻿namespace EBook.DataAccess.Services;
 public class PhotoService : IPhotoService
 {
     private readonly Cloudinary _cloudinary;
