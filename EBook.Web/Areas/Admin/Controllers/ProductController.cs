@@ -63,7 +63,7 @@ public class ProductController : BaseAdminController
 
     [HttpGet]
     public IActionResult GetAll()
-        => Json(new { data = _unitOfWork.ProductRepository.GetAll() });
+        => Json(new { data = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category,CoverType") });
 
     #endregion
 }
