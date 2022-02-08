@@ -63,11 +63,10 @@ public class ProductController : BaseAdminController
     }
 
     #region API calls
+
     [HttpGet]
     public IActionResult GetAll()
-    {
-        var products = _unitOfWork.ProductRepository.GetAll();
-        return Json(new { data = products });
-    }
+        => Json(new { data = _unitOfWork.ProductRepository.GetAll() });
+
     #endregion
 }
