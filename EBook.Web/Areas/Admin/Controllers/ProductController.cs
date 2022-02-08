@@ -73,5 +73,18 @@ public class ProductController : BaseAdminController
     public IActionResult GetAll()
         => Json(new { data = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category,CoverType") });
 
+    [HttpDelete]
+    public IActionResult Delete(int? id)
+    {
+        var product = _unitOfWork.ProductRepository.GetFirstOrDefault(p => p.Id == id);
+
+        if (product == null) return Json(new { success = false, message = "Error while deleting!" });
+
+        _unitOfWork.ProductRepository.Remove(product);
+        _unitOfWork.Save();
+
+        return Json(new { success = true, message = "Deleted Successfully" });
+    }
+
     #endregion
 }
