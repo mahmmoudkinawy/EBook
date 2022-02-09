@@ -1,11 +1,11 @@
 ﻿namespace EBook.Web.Areas.Customer.Controllers;
-
-[Area("Customer")]
-public class HomeController : Controller
+public class HomeController : BaseCustomerController
 {
+    private readonly IUnitOfWork _unitOfWork;
+
+    public HomeController(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+
     public IActionResult Index()
-    {
-        return View();
-    }
+        => View(_unitOfWork.ProductRepository.GetAll(includeProperties: "Category,CoverType"));
 }
 
