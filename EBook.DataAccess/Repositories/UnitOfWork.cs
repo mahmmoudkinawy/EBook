@@ -9,11 +9,13 @@ public class UnitOfWork : IUnitOfWork
         CategoryRepository = new CategoryRepository(_context); //Initial value for CategoryRepository
         CoverTypeRepository = new CoverTypeRepository(_context);
         ProductRepository = new ProductRepository(_context);
+        CompanyRepository = new CompanyRepository(_context);
     }
 
     public ICategoryRepository CategoryRepository { get; }
     public ICoverTypeRepository CoverTypeRepository { get; }
-    public IProductRepository ProductRepository { get; set; }
+    public IProductRepository ProductRepository { get; }
+    public ICompanyRepository CompanyRepository { get; }
 
     public void Save() => _context.SaveChanges();
 }
