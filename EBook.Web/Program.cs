@@ -2,13 +2,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddDbContext<DataContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDefaultIdentity<IdentityUser>()
+
+//It should be IdentityUser not the class that extends from it, and that's make sense 
+//because that's is the default attitude
+builder.Services.AddDefaultIdentity<IdentityUser>() 
     .AddEntityFrameworkStores<DataContext>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
