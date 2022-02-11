@@ -7,3 +7,4 @@ global using CloudinaryDotNet.Actions;
 global using EBook.Models.Helpers;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.Extensions.Options;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
