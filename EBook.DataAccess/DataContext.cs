@@ -9,5 +9,6 @@ public class DataContext : IdentityDbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Company> Companies { get; set; }
+    public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 }
 
