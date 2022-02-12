@@ -7,4 +7,10 @@ public class AppUser : IdentityUser
     public string? City { get; set; }
     public string? State { get; set; }
     public string? PostalCode { get; set; }
+
+    public int? CompanyId { get; set; }
+
+    [ForeignKey("CompanyId")]
+    [ValidateNever]
+    public Company Company { get; set; }
 }
