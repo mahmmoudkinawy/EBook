@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EBook.Web.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace EBook.Web.Areas.Customer.Controllers;
@@ -28,12 +29,13 @@ public class HomeController : BaseCustomerController
     [Authorize]
     public IActionResult Details(ShoppingCart shoppingCart)
     {
-        var claimsIdentity = (ClaimsIdentity)User.Identity;
-        var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-        shoppingCart.AppUserId = claim.Value;
+        var user = User.GetUserNameIdentifier();
+
+        shoppingCart.AppUserId = user;
 
         var cart = _unitOfWork.ShoppingCartRepository.GetFirstOrDefault(
-                u => u.AppUserId == claim.Value && u.ProductId == shoppingCart.ProductId
+                    u => u.AppUserId == user
+                        && u.ProductId == shoppingCart.ProductId
             );
 
         if (cart == null)
