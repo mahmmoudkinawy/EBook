@@ -9,3 +9,5 @@ global using EBook.Models.Helpers;
 global using EBook.DataAccess.Services;
 global using EBook.Models.ViewModels;
 global using Microsoft.AspNetCore.Identity;
+global using EBook.Utility;
+global using Microsoft.AspNetCore.Identity.UI.Services;
