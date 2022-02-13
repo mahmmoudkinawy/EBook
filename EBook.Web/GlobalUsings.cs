@@ -11,3 +11,5 @@ global using EBook.Models.ViewModels;
 global using Microsoft.AspNetCore.Identity;
 global using EBook.Utility;
 global using Microsoft.AspNetCore.Identity.UI.Services;
+global using Microsoft.AspNetCore.Authorization;
+global using EBook.Web.Extensions;

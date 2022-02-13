@@ -1,4 +1,6 @@
-﻿namespace EBook.DataAccess.Repositories;
+﻿using System.Linq;
+
+namespace EBook.DataAccess.Repositories;
 public class Repository<T> : IRepository<T> where T : class
 {
     private readonly DataContext _context;
@@ -12,10 +14,14 @@ public class Repository<T> : IRepository<T> where T : class
     public void Add(T entity) => _dbSet.Add(entity);
 
     //includeProperties => "Category,CoverType"
-    public IEnumerable<T> GetAll(string? includeProperties = null)
+    public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null,
+        string? includeProperties = null)
     {
         //var query = _dbSet; //That's not correct
         IQueryable<T> query = _dbSet; //Untill now we didn't go to the database
+
+        if (filter != null)
+            query = query.Where(filter);
 
         if (includeProperties != null)
             foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -24,7 +30,7 @@ public class Repository<T> : IRepository<T> where T : class
         return query.ToList();
     }
 
-    public T GetFirstOrDefault(Expression<Func<T, bool>> filter, 
+    public T GetFirstOrDefault(Expression<Func<T, bool>> filter,
         string? includeProperties = null)
     {
         IQueryable<T> query = _dbSet;
