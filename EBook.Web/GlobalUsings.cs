@@ -14,3 +14,6 @@ global using Microsoft.AspNetCore.Identity.UI.Services;
 global using Microsoft.AspNetCore.Authorization;
 global using EBook.Web.Extensions;
 global using System.Security.Claims;
+global using System.Net;
+global using System.Text.Json;
+global using EBook.Web.Middleware;
