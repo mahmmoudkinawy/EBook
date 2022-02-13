@@ -34,7 +34,7 @@
                             <div class="col-4 text-md-right pt-4">
                                 <h6>
                                     <strong>
-                                        @item.Product.Price.ToString("c")<span class="text-muted">&nbsp;x&nbsp;</span>
+                                        @item.Price.ToString("c")<span class="text-muted">&nbsp;x&nbsp;</span>
                                         @item.Count
                                     </strong>
                                 </h6>
@@ -65,7 +65,7 @@
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between bg-light">
                                 <span class="text-info"> Total (USD)</span>
-                                <strong class="text-info">$$$</strong>
+                                <strong class="text-info">@Model.CartTotal.ToString("c")</strong>
                             </li>
                         </ul>
                     </div>
