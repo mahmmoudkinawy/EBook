@@ -18,6 +18,13 @@ builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
