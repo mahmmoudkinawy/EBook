@@ -20,6 +20,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("StripeSettings:SecretKey").ToString();
+
 app.UseAuthentication();
 
 app.UseAuthorization();

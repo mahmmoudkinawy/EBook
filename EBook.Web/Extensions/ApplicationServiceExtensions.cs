@@ -15,6 +15,8 @@ public static class ApplicationServiceExtensions
 
         services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
 
+        services.Configure<StripeSettings>(config.GetSection("StripeSettings"));
+
         return services;
     }
 }
