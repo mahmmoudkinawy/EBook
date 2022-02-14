@@ -4,6 +4,8 @@
 public class CartController : BaseCustomerController
 {
     private readonly IUnitOfWork _unitOfWork;
+
+    [BindProperty]
     public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
 
     public CartController(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
@@ -53,6 +55,53 @@ public class CartController : BaseCustomerController
         }
 
         return View(ShoppingCartViewModel);
+    }
+
+    [HttpPost, ActionName("Summary")]
+    [ValidateAntiForgeryToken]
+    public IActionResult SummaryPost()
+    {
+        var user = User.GetUserNameIdentifier();
+
+        ShoppingCartViewModel.ShoppingCartList = _unitOfWork.ShoppingCartRepository.GetAll(u => u.AppUserId == user,
+                                    includeProperties: "Product");
+
+        ShoppingCartViewModel.OrderHeader.OrderStatus = Constants.StatusPending;
+        ShoppingCartViewModel.OrderHeader.PaymentStatus = Constants.PaymentStatusPending;
+        ShoppingCartViewModel.OrderHeader.OrderDate = DateTime.Now;
+        ShoppingCartViewModel.OrderHeader.AppUserId = user;
+
+        foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+        {
+            cart.Price = GetPriceBasedOnQuantity(cart.Count, cart.Product.Price, cart.Product.Price50, cart.Product.Price100);
+            ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+        }
+
+        //Save order header
+        _unitOfWork.OrderHeaderRepository.Add(ShoppingCartViewModel.OrderHeader);
+        _unitOfWork.Save();
+
+        foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+        {
+            var orderDetail = new OrderDetail
+            {
+                ProductId = cart.ProductId,
+                Count = cart.Count,
+                Price = cart.Price,
+                OrderId = ShoppingCartViewModel.OrderHeader.Id
+            };
+
+            //Save order details
+            _unitOfWork.OrderDetailRepository.Add(orderDetail);
+            _unitOfWork.Save();
+        }
+
+        _unitOfWork.ShoppingCartRepository.RemoveRange(ShoppingCartViewModel.ShoppingCartList);
+        _unitOfWork.Save();
+
+        //TempData["success"] = "Order Placed Successfully";
+
+        return RedirectToAction("Index", "Cart");
     }
 
     public IActionResult Plus(int cartId)
