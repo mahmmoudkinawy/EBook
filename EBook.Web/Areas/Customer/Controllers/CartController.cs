@@ -1,4 +1,6 @@
-﻿namespace EBook.Web.Areas.Customer.Controllers;
+﻿using Stripe.Checkout;
+
+namespace EBook.Web.Areas.Customer.Controllers;
 
 [Authorize]
 public class CartController : BaseCustomerController
@@ -96,12 +98,66 @@ public class CartController : BaseCustomerController
             _unitOfWork.Save();
         }
 
-        _unitOfWork.ShoppingCartRepository.RemoveRange(ShoppingCartViewModel.ShoppingCartList);
+        //Stripe ready code
+        var domain = "https://localhost:44364/";
+        var options = new SessionCreateOptions
+        {
+            LineItems = new List<SessionLineItemOptions>(),
+            Mode = "payment",
+            SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartViewModel.OrderHeader.Id}",
+            CancelUrl = domain + $"customer/cart/index"
+        };
+
+        foreach (var item in ShoppingCartViewModel.ShoppingCartList)
+        {
+            var sessionLineItem = new SessionLineItemOptions
+            {
+                PriceData = new SessionLineItemPriceDataOptions
+                {
+                    UnitAmount = (long)item.Price * 100, //20.00 => 2000
+                    Currency = "usd",
+                    ProductData = new SessionLineItemPriceDataProductDataOptions
+                    {
+                        Name = item.Product.Title
+                    },
+
+                },
+                Quantity = item.Count
+            };
+            options.LineItems.Add(sessionLineItem);
+        }
+
+        var service = new SessionService();
+        Session session = service.Create(options);
+
+        _unitOfWork.OrderHeaderRepository.UpdateStripePaymentId(ShoppingCartViewModel.OrderHeader.Id,
+            session.Id, session.PaymentIntentId);
         _unitOfWork.Save();
 
-        //TempData["success"] = "Order Placed Successfully";
+        Response.Headers.Add("Location", session.Url);
+        return new StatusCodeResult(303);
+    }
 
-        return RedirectToAction("Index", "Cart");
+    public IActionResult OrderConfirmation(int id)
+    {
+        var orderHeader = _unitOfWork.OrderHeaderRepository.GetFirstOrDefault(o => o.Id == id);
+        var service = new SessionService();
+        Session session = service.Get(orderHeader.SessionId);
+        //Check the stripe status, so no one can copy the link and redirected
+        if (session.PaymentStatus.ToLower() == "paid")
+        {
+            _unitOfWork.OrderHeaderRepository.UpdateStatus(id, Constants.StatusApproved,
+                Constants.PaymentStatusApproved);
+            _unitOfWork.Save();
+        }
+
+        var shoppingCarts = _unitOfWork.ShoppingCartRepository
+            .GetAll(u => u.AppUserId == orderHeader.AppUserId).ToList();
+
+        _unitOfWork.ShoppingCartRepository.RemoveRange(shoppingCarts);
+        _unitOfWork.Save();
+
+        return View(id);
     }
 
     public IActionResult Plus(int cartId)

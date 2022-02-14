@@ -16,5 +16,12 @@ public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderReposi
                 orderHeaderFromDb.PaymentStatus = paymentStatus;
         }
     }
+
+    public void UpdateStripePaymentId(int id, string sessionId, string paymentIntentId)
+    {
+        var orderHeaderFromDb = _context.OrderHeaders.Find(id);
+        orderHeaderFromDb.SessionId = sessionId;
+        orderHeaderFromDb.PaymentIntentId = paymentIntentId;
+    }
 }
 

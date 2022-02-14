@@ -1,4 +1,6 @@
 ﻿@model ShoppingCartViewModel
+@using Microsoft.Extensions.Options
+@inject IOptions<StripeSettings> Stripe
 @{
     ViewData["Title"] = "Summary";
 }

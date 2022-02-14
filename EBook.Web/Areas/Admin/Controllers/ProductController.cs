@@ -17,7 +17,7 @@ public class ProductController : BaseAdminController
     {
         var productViewModel = new ProductViewModel
         {
-            Product = new Product(),
+            Product = new Models.Product(),
             CategoryList = _unitOfWork.CategoryRepository.GetAll().Select(c => new SelectListItem
             {
                 Text = c.Name,
