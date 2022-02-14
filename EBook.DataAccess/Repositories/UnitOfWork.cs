@@ -12,6 +12,8 @@ public class UnitOfWork : IUnitOfWork
         CompanyRepository = new CompanyRepository(_context);
         AppUserRepository = new AppUserRepository(_context);
         ShoppingCartRepository = new ShoppingCartRepository(_context);
+        OrderDetailRepository = new OrderDetailRepository(_context);
+        OrderHeaderRepository = new OrderHeaderRepository(_context);
     }
 
     public ICategoryRepository CategoryRepository { get; }
@@ -20,6 +22,8 @@ public class UnitOfWork : IUnitOfWork
     public ICompanyRepository CompanyRepository { get; }
     public IAppUserRepository AppUserRepository { get; }
     public IShoppingCartRepository ShoppingCartRepository { get; }
+    public IOrderHeaderRepository OrderHeaderRepository { get; }
+    public IOrderDetailRepository OrderDetailRepository { get; }
 
     public void Save() => _context.SaveChanges();
 }
