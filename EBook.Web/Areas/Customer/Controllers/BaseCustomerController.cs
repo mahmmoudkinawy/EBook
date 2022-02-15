@@ -1,6 +1,6 @@
 ﻿namespace EBook.Web.Areas.Customer.Controllers;
 [Area("Customer")]
-public class BaseCustomerController : Controller
+public abstract class BaseCustomerController : Controller
 {
 }
 
