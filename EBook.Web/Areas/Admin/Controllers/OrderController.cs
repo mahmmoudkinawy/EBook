@@ -1,4 +1,6 @@
 ﻿namespace EBook.Web.Areas.Admin.Controllers;
+
+[Authorize]
 public class OrderController : BaseAdminController
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -11,7 +13,13 @@ public class OrderController : BaseAdminController
     [HttpGet]
     public IActionResult GetAll(string status)
     {
-        var orderHeaders = _unitOfWork.OrderHeaderRepository.GetAll(includeProperties: "AppUser");
+        IEnumerable<OrderHeader> orderHeaders = null;
+
+        if (User.IsInRole(Constants.RoleAdmin) || User.IsInRole(Constants.RoleEmployee))
+            orderHeaders = _unitOfWork.OrderHeaderRepository.GetAll(includeProperties: "AppUser");
+        else
+            orderHeaders = _unitOfWork.OrderHeaderRepository.GetAll(u => u.AppUserId == User.GetUserNameIdentifier(),
+                includeProperties: "AppUser");
 
         orderHeaders = status switch
         {
