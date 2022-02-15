@@ -9,9 +9,18 @@ public class OrderController : BaseAdminController
 
     #region API CALLS
     [HttpGet]
-    public IActionResult GetAll()
+    public IActionResult GetAll(string status)
     {
         var orderHeaders = _unitOfWork.OrderHeaderRepository.GetAll(includeProperties: "AppUser");
+
+        orderHeaders = status switch
+        {
+            "pending" => orderHeaders.Where(p => p.PaymentStatus == Constants.PaymentStatusDelayedPayment),
+            "inprocess" => orderHeaders.Where(p => p.OrderStatus == Constants.StatusInProcess),
+            "completed" => orderHeaders.Where(p => p.OrderStatus == Constants.StatusShipped),
+            "approved" => orderHeaders.Where(p => p.OrderStatus == Constants.StatusApproved),
+            _ => orderHeaders
+        };
 
         return Json(new
         {
