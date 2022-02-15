@@ -5,9 +5,53 @@ public class OrderController : BaseAdminController
 {
     private readonly IUnitOfWork _unitOfWork;
 
+    [BindProperty]
+    public OrderViewModel OrderViewModel { get; set; }
+
     public OrderController(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
     public IActionResult Index() => View();
+
+    public IActionResult Details(int orderId)
+    {
+        OrderViewModel = new()
+        {
+            OrderDetails = _unitOfWork.OrderDetailRepository.GetAll(u => u.OrderId == orderId,
+                includeProperties: "Product"),
+            OrderHeader = _unitOfWork.OrderHeaderRepository.GetFirstOrDefault(u => u.Id == orderId,
+                includeProperties: "AppUser")
+        };
+
+        return View(OrderViewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult UpdateOrderitem()
+    {
+        var orderHeaderFromDb = _unitOfWork.OrderHeaderRepository.GetFirstOrDefault(u => u.Id == OrderViewModel.OrderHeader.Id);
+
+        orderHeaderFromDb.Name = OrderViewModel.OrderHeader.Name;
+        orderHeaderFromDb.PhoneNumber = OrderViewModel.OrderHeader.PhoneNumber;
+        orderHeaderFromDb.StreetAddress = OrderViewModel.OrderHeader.StreetAddress;
+        orderHeaderFromDb.City = OrderViewModel.OrderHeader.City;
+        orderHeaderFromDb.State = OrderViewModel.OrderHeader.State;
+        orderHeaderFromDb.PostalCode = OrderViewModel.OrderHeader.PostalCode;
+
+        if (OrderViewModel.OrderHeader.Carrier != null)
+            orderHeaderFromDb.Carrier = OrderViewModel.OrderHeader.Carrier;
+
+        if (OrderViewModel.OrderHeader.TrackingNumber != null)
+            orderHeaderFromDb.TrackingNumber = OrderViewModel.OrderHeader.TrackingNumber;
+
+
+        _unitOfWork.OrderHeaderRepository.Update(orderHeaderFromDb);
+        _unitOfWork.Save();
+
+        TempData["success"] = "Order Details Updated Successfully";
+
+        return RedirectToAction("Details", "Order", new { orderId = orderHeaderFromDb.Id });
+    }
 
     #region API CALLS
     [HttpGet]
