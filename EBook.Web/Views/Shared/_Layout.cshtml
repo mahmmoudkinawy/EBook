@@ -43,24 +43,11 @@
                     <li class="nav-item">
                         <a asp-controller="Order" asp-action="Index" asp-area="Admin" class="nav-link">Manage Orders</a>
                     </li>
-                    @if (HttpContextAccessor.HttpContext.Session.GetInt32(Constants.SessionCart) != null)
-                    {
-                        <li class="nav-item">
-                            <a asp-controller="Cart" asp-action="Index" asp-area="Customer" class="nav-link" style="cursor: pointer">
-                                <i class="bi bi-cart"></i> &nbsp;
-                                (@HttpContextAccessor.HttpContext.Session.GetInt32(Constants.SessionCart))
-                            </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a asp-controller="Cart" asp-action="Index" asp-area="Customer" class="nav-link" style="cursor: pointer">
-                                <i class="bi bi-cart"></i> &nbsp;
-                                (0)
-                            </a>
-                        </li>
-                    }
+                    <li class="nav-item">
+                        <a asp-controller="Cart" asp-action="Index" asp-area="Customer" class="nav-link" style="cursor: pointer">
+                            @await Component.InvokeAsync("ShoppingCart")
+                        </a>
+                    </li>
                 </ul>
                 <partial name="_LoginPartial" />
                 @*                <form class="d-flex">
