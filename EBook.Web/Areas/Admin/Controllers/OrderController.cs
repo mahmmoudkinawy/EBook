@@ -27,6 +27,7 @@ public class OrderController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = Constants.RoleAdmin + "," + Constants.RoleEmployee)]
     public IActionResult UpdateOrderitem()
     {
         var orderHeaderFromDb = _unitOfWork.OrderHeaderRepository.GetFirstOrDefault(u => u.Id == OrderViewModel.OrderHeader.Id);
@@ -55,6 +56,7 @@ public class OrderController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = Constants.RoleAdmin + "," + Constants.RoleEmployee)]
     public IActionResult StartProcessing()
     {
         _unitOfWork.OrderHeaderRepository.UpdateStatus(OrderViewModel.OrderHeader.Id,
@@ -68,6 +70,7 @@ public class OrderController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = Constants.RoleAdmin + "," + Constants.RoleEmployee)]
     public IActionResult ShipOrder()
     {
         var orderHeaderFromDb = _unitOfWork.OrderHeaderRepository.GetFirstOrDefault(u => u.Id == OrderViewModel.OrderHeader.Id);
@@ -76,10 +79,46 @@ public class OrderController : BaseAdminController
         orderHeaderFromDb.OrderStatus = OrderViewModel.OrderHeader.OrderStatus;
         orderHeaderFromDb.ShippingDate = DateTime.Now;
 
+        if (orderHeaderFromDb.PaymentStatus == Constants.PaymentStatusDelayedPayment)
+            orderHeaderFromDb.PaymentDueDate = DateTime.Now.AddDays(30);
+
         _unitOfWork.OrderHeaderRepository.Update(orderHeaderFromDb);
         _unitOfWork.Save();
 
         TempData["success"] = "Order Shipped Successfully";
+
+        return RedirectToAction("Details", "Order", new { orderId = OrderViewModel.OrderHeader.Id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = Constants.RoleAdmin + "," + Constants.RoleEmployee)]
+    public IActionResult CancelOrder()
+    {
+        var orderHeaderFromDb = _unitOfWork.OrderHeaderRepository.GetFirstOrDefault(u => u.Id == OrderViewModel.OrderHeader.Id);
+        if (orderHeaderFromDb.PaymentStatus == Constants.PaymentStatusApproved)
+        {
+            var options = new RefundCreateOptions
+            {
+                Reason = RefundReasons.RequestedByCustomer,
+                PaymentIntent = orderHeaderFromDb.PaymentIntentId
+            };
+
+            var service = new RefundService();
+            Refund refund = service.Create(options);
+
+            _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeaderFromDb.Id, Constants.StatusCancelled,
+                Constants.StatusRefunded);
+        }
+        else
+        {
+            _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeaderFromDb.Id, Constants.StatusCancelled,
+                Constants.StatusCancelled);
+        }
+
+        _unitOfWork.Save();
+
+        TempData["success"] = "Order Cancelled Successfully";
 
         return RedirectToAction("Details", "Order", new { orderId = OrderViewModel.OrderHeader.Id });
     }

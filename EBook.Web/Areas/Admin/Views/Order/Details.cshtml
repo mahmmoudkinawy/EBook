@@ -234,15 +234,16 @@
                                 {
                                     <input type="submit" onclick="return ValidateInput()" asp-action="ShipOrder" class="btn btn-primary form-control my-1" value="Ship Order" />
                                 }
-                                if (Model.OrderHeader.OrderStatus == Constants.PaymentStatusDelayedPayment &&
+                                if (Model.OrderHeader.PaymentStatus == Constants.PaymentStatusDelayedPayment &&
                                 Model.OrderHeader.OrderStatus == Constants.StatusShipped)
                                 {
                                     <input type="submit" class="btn btn-success form-control my-1" value="Pay Now" />
                                 }
                                 if (Model.OrderHeader.OrderStatus != Constants.StatusRefunded &&
-                                Model.OrderHeader.OrderStatus != Constants.StatusCancelled)
+                                Model.OrderHeader.OrderStatus != Constants.StatusCancelled &&
+                                Model.OrderHeader.OrderStatus != Constants.StatusShipped)
                                 {
-                                    <input type="submit" class="btn btn-danger form-control my-1" value="Cancel Order" />
+                                    <input type="submit" asp-action="CancelOrder" class="btn btn-danger form-control my-1" value="Cancel Order" />
                                 }
                             }
                         </div>
