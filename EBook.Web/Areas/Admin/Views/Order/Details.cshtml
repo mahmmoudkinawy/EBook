@@ -228,11 +228,11 @@
                             {
                                 if (Model.OrderHeader.OrderStatus == Constants.StatusApproved)
                                 {
-                                    <input type="submit" class="btn btn-primary form-control my-1" value="Start Processing" />
+                                    <input type="submit" asp-action="StartProcessing" class="btn btn-primary form-control my-1" value="Start Processing" />
                                 }
                                 if (Model.OrderHeader.OrderStatus == Constants.StatusInProcess)
                                 {
-                                    <input type="submit" class="btn btn-primary form-control my-1" value="Ship Order" />
+                                    <input type="submit" onclick="return ValidateInput()" asp-action="ShipOrder" class="btn btn-primary form-control my-1" value="Ship Order" />
                                 }
                                 if (Model.OrderHeader.OrderStatus == Constants.PaymentStatusDelayedPayment &&
                                 Model.OrderHeader.OrderStatus == Constants.StatusShipped)
@@ -253,3 +253,30 @@
     </div>
 </form>
 
+
+@section Scripts {
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+<script>
+    function ValidateInput() {
+            if(document.getElementById("trackingNumber").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter a tracking number!'
+                })
+                return false;
+            }
+            if(document.getElementById("carrier").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter a carrier!'
+                })
+                return false;
+            }
+            return true;
+    }
+</script>
+}
