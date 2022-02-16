@@ -1,4 +1,6 @@
-﻿namespace EBook.Web.Areas.Customer.Controllers;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace EBook.Web.Areas.Customer.Controllers;
 public class HomeController : BaseCustomerController
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -35,11 +37,17 @@ public class HomeController : BaseCustomerController
             );
 
         if (cart == null)
+        {
             _unitOfWork.ShoppingCartRepository.Add(shoppingCart);
+            _unitOfWork.Save();
+            HttpContext.Session.SetInt32(Constants.SessionCart,
+                _unitOfWork.ShoppingCartRepository.GetAll(u => u.AppUserId == user).ToList().Count);
+        }
         else
+        {
             _unitOfWork.ShoppingCartRepository.IncrementCount(cart, shoppingCart.Count);
-
-        _unitOfWork.Save();
+            _unitOfWork.Save();
+        }
 
         return RedirectToAction(nameof(Index));
     }

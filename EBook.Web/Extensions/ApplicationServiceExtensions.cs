@@ -17,6 +17,15 @@ public static class ApplicationServiceExtensions
 
         services.Configure<StripeSettings>(config.GetSection("StripeSettings"));
 
+        services.AddDistributedMemoryCache();
+
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromSeconds(100);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+
         return services;
     }
 }
