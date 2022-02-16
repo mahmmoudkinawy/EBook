@@ -149,6 +149,8 @@ public class CartController : BaseCustomerController
                 session.Id, session.PaymentIntentId);
             _unitOfWork.Save();
 
+            HttpContext.Session.Clear();
+
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
@@ -215,7 +217,7 @@ public class CartController : BaseCustomerController
         {
             _unitOfWork.ShoppingCartRepository.DecrementCount(cart, 1);
         }
-        
+
         _unitOfWork.Save();
 
         TempData["success"] = "Decremented Successfully";
