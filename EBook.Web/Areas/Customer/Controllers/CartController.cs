@@ -182,7 +182,7 @@ public class CartController : BaseCustomerController
         }
 
         _emailSender.SendEmailAsync(orderHeader.AppUser.Email, "New Order - Kinawy's EBook Store",
-            "<p>Hello Khloud This is message from Kinawy's Application</p>");
+            "<p>Hello This is message from Kinawy's Application</p>");
         var shoppingCarts = _unitOfWork.ShoppingCartRepository
             .GetAll(u => u.AppUserId == orderHeader.AppUserId).ToList();
         _unitOfWork.ShoppingCartRepository.RemoveRange(shoppingCarts);
@@ -196,7 +196,7 @@ public class CartController : BaseCustomerController
         var cart = _unitOfWork.ShoppingCartRepository.GetFirstOrDefault(c => c.Id == cartId);
         _unitOfWork.ShoppingCartRepository.IncrementCount(cart, 1);
         _unitOfWork.Save();
-        //TempData["success"] = "Incremented Successfully";
+        TempData["success"] = "Incremented Successfully";
         return RedirectToAction(nameof(Index));
     }
 
@@ -205,12 +205,20 @@ public class CartController : BaseCustomerController
         var cart = _unitOfWork.ShoppingCartRepository.GetFirstOrDefault(c => c.Id == cartId);
 
         if (cart.Count <= 1)
+        {
             _unitOfWork.ShoppingCartRepository.Remove(cart);
-
-        _unitOfWork.ShoppingCartRepository.DecrementCount(cart, 1);
-
+            var count = _unitOfWork.ShoppingCartRepository.GetAll(u => u.AppUserId == cart.AppUserId)
+                    .ToList().Count - 1;
+            HttpContext.Session.SetInt32(Constants.SessionCart, count);
+        }
+        else
+        {
+            _unitOfWork.ShoppingCartRepository.DecrementCount(cart, 1);
+        }
+        
         _unitOfWork.Save();
-        //TempData["success"] = "Incremented Successfully";
+
+        TempData["success"] = "Decremented Successfully";
         return RedirectToAction(nameof(Index));
     }
 
@@ -219,7 +227,10 @@ public class CartController : BaseCustomerController
         var cart = _unitOfWork.ShoppingCartRepository.GetFirstOrDefault(c => c.Id == cartId);
         _unitOfWork.ShoppingCartRepository.Remove(cart);
         _unitOfWork.Save();
-        //TempData["success"] = "Incremented Successfully";
+        var count = _unitOfWork.ShoppingCartRepository.GetAll(u => u.AppUserId == cart.AppUserId)
+                .ToList().Count;
+        HttpContext.Session.SetInt32(Constants.SessionCart, count);
+        TempData["success"] = "Removed Successfully";
         return RedirectToAction(nameof(Index));
     }
 
