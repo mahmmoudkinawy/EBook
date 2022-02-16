@@ -1,8 +1,4 @@
-﻿using EBook.Web.Extensions;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-
-namespace EBook.Web.Areas.Customer.Controllers;
+﻿namespace EBook.Web.Areas.Customer.Controllers;
 public class HomeController : BaseCustomerController
 {
     private readonly IUnitOfWork _unitOfWork;

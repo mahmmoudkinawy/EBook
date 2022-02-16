@@ -1,16 +1,19 @@
-﻿using Stripe.Checkout;
-
-namespace EBook.Web.Areas.Customer.Controllers;
+﻿namespace EBook.Web.Areas.Customer.Controllers;
 
 [Authorize]
 public class CartController : BaseCustomerController
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IEmailSender _emailSender;
 
     [BindProperty]
     public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
 
-    public CartController(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
+    {
+        _unitOfWork = unitOfWork;
+        _emailSender = emailSender;
+    }
 
     public IActionResult Index()
     {
@@ -162,7 +165,9 @@ public class CartController : BaseCustomerController
 
     public IActionResult OrderConfirmation(int id)
     {
-        var orderHeader = _unitOfWork.OrderHeaderRepository.GetFirstOrDefault(o => o.Id == id);
+        var orderHeader = _unitOfWork.OrderHeaderRepository.GetFirstOrDefault(o => o.Id == id,
+            includeProperties: "AppUser");
+
         if (orderHeader.PaymentStatus != Constants.PaymentStatusDelayedPayment)
         {
             var service = new SessionService();
@@ -176,6 +181,8 @@ public class CartController : BaseCustomerController
             }
         }
 
+        _emailSender.SendEmailAsync(orderHeader.AppUser.Email, "New Order - Kinawy's EBook Store",
+            "<p>Hello Khloud This is message from Kinawy's Application</p>");
         var shoppingCarts = _unitOfWork.ShoppingCartRepository
             .GetAll(u => u.AppUserId == orderHeader.AppUserId).ToList();
         _unitOfWork.ShoppingCartRepository.RemoveRange(shoppingCarts);
