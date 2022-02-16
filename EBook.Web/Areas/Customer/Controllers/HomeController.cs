@@ -40,6 +40,7 @@ public class HomeController : BaseCustomerController
         {
             _unitOfWork.ShoppingCartRepository.Add(shoppingCart);
             _unitOfWork.Save();
+            TempData["success"] = "Added Item to your Cart.";
             HttpContext.Session.SetInt32(Constants.SessionCart,
                 _unitOfWork.ShoppingCartRepository.GetAll(u => u.AppUserId == user).ToList().Count);
         }
@@ -47,6 +48,7 @@ public class HomeController : BaseCustomerController
         {
             _unitOfWork.ShoppingCartRepository.IncrementCount(cart, shoppingCart.Count);
             _unitOfWork.Save();
+            TempData["success"] = "Incremented Successfully";
         }
 
         return RedirectToAction(nameof(Index));
