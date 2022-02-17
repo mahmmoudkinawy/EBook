@@ -124,16 +124,6 @@ namespace EBook.Web.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!_roleManager.RoleExistsAsync(Constants.RoleAdmin).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(Constants.RoleUserIndividual)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(Constants.RoleUserCompany)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(Constants.RoleAdmin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(Constants.RoleEmployee)).GetAwaiter().GetResult();
-            }
-
-            //When using _roleManager it saves the items auto to the database.
-
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             Input = new InputModel

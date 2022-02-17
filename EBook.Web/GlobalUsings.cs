@@ -19,3 +19,4 @@ global using System.Text.Json;
 global using EBook.Web.Middleware;
 global using Stripe;
 global using Stripe.Checkout;
+global using EBook.DataAccess.DbInitializer;

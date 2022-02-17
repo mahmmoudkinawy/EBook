@@ -11,6 +11,8 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        services.AddScoped<IDbInitializer, DbInitializer>();
+
         services.AddScoped<IPhotoService, PhotoService>();
 
         services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));

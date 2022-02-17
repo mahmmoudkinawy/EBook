@@ -8,3 +8,6 @@ global using EBook.Models.Helpers;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.Extensions.Options;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Identity;
+global using EBook.Utility;
+global using Microsoft.Extensions.Logging;
