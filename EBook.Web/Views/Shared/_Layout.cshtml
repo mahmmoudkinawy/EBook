@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EBook.Web</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/swatchTheme.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EBook.Web.styles.css" asp-append-version="true" />
@@ -17,7 +17,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">Bookbon</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -52,10 +52,6 @@
                     </li>
                 </ul>
                 <partial name="_LoginPartial" />
-                @*                <form class="d-flex">
-                    <input class="form-control me-sm-2" type="text" placeholder="Search">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                    </form>*@
             </div>
         </div>
     </nav>
@@ -68,7 +64,7 @@
 
     <footer class="border-top footer text-muted bg-primary">
         <div class="container">
-            &copy; @DateTime.UtcNow.Year - EBook
+            &copy; @DateTime.UtcNow.Year - Kinawy's Bookboon Store
         </div>
     </footer>
 
