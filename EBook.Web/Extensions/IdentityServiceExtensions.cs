@@ -16,11 +16,17 @@ public static class IdentityServiceExtensions
             options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
         });
 
-        services.AddAuthentication().AddFacebook(options =>
+        services.AddAuthentication()
+            .AddFacebook(options =>
         {
             options.AppId = config.GetSection("Facebook:AppId").Value;
             options.AppSecret = config.GetSection("Facebook:AppSecret").Value;
-        });
+        })
+            .AddGoogle(options =>
+            {
+                options.ClientId = config.GetSection("Google:ClientId").Value;
+                options.ClientSecret = config.GetSection("Google:ClientSecret").Value;
+            });
 
         return services;
     }
