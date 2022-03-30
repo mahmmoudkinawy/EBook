@@ -1,13 +1,32 @@
-# Test Cards:-
+# EBook Store
 
-### Successfull Card : 4242 4242 4242 4242
+Simple overview of use and purpose.
 
-### Your card has insufficient funds : 4000 0000 0000 9995
+## Description
 
-### Your card has stolen or lost : 4000 0000 0000 9979
+EBook Store it's an app built with Clean Architecture by using Asp.net Core MVC 6.0, Identity, APIs, 3d Party APIs authentication ... etc.
 
-### 3d authentication : 4000 0027 6000 3184
+## Getting Started
 
-#### For more cards:-
+### Tools
 
-#### https://stripe.com/docs/testing
+- MSSQL
+- Asp.net Core 6.0
+
+### Installing
+
+- Just clone the project
+
+### Executing program
+
+- Just run it, I seeded the data then it will work.
+
+## Help
+
+```
+Just contact me : mahmmoudkinawy@gmail.com
+```
+
+## Author
+
+<a href="https://github.com/mahmmoudkinawy">Mahmmoud Kinawy</a>
